@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0e0e10">
+<title>Invasion Of Zombies</title>
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="game"></canvas>
+
+  <!-- HUD overlay (drawn over the canvas via DOM for crisp text) -->
+  <div id="hud" class="hidden">
+    <div id="hud-bar">
+      <div class="hud-chip hud-squad" id="squad-pill"><span class="hud-k">Squad</span><b id="count">1</b></div>
+      <div id="hud-center">
+        <div class="hud-chip hud-weapon" id="weapon-pill"><span class="hud-k">Weapon</span><b id="weapon">PISTOL</b></div>
+        <div class="hud-chip hud-shield hidden" id="shield">🛡</div>
+        <div class="hud-chip hud-shield hidden" id="vanchip">🚐</div>
+      </div>
+      <div id="hud-right">
+        <div class="hud-chip"><span class="hud-k">Dist</span><b id="dist">0m</b></div>
+        <div class="hud-chip"><span class="hud-k">Kills</span><b id="kills">0</b></div>
+      </div>
+    </div>
+    <!-- XP run-up: live claw-back readout, camp runs only (revealed in 06-main when the host
+         passes ?stake=). Sits under the Dist/Kills row, clear of the centered weapon group. -->
+    <div id="xp-pill" class="hud-xp hidden"><span class="hud-k">XP Back</span><b id="xp-back">+0</b></div>
+    <!-- camp-run grace timer: faint 30s countdown, centered, camp runs only (see 06-main) -->
+    <div id="mg-countdown" aria-hidden="true"></div>
+    <!-- bottom-left: your leader's portrait (camp runs only) -->
+    <div id="hud-bl">
+      <img id="leader-pic" class="hidden" alt="Leader">
+    </div>
+    <!-- bottom-center: the yellow PAUSE/RESUME pill -->
+    <div id="hud-bc">
+      <button id="pausebtn" class="hud-btn hud-pause" aria-label="Pause">PAUSE</button>
+    </div>
+    <!-- bottom-right: mute toggle -->
+    <div id="hud-br">
+      <button id="mutebtn" class="hud-btn hud-mute" aria-label="Toggle sound">🔊</button>
+    </div>
+  </div>
+
+  <!-- Pause veil (in-run only; the bottom-left PAUSE/RESUME button toggles it).
+       Non-interactive dim that sits BELOW the HUD (z-index 8 < #hud 10) so the
+       RESUME button stays clickable over it. -->
+  <div id="paused" class="hidden" style="position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;background:rgba(14,14,16,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);pointer-events:none">
+    <div style="font-family:'Outfit',system-ui,sans-serif;color:#eef1f6;font-size:42px;font-weight:800;letter-spacing:.06em">PAUSED</div>
+  </div>
+
+  <!-- Machine-readable end-of-run signal for the embedding host (zbilltracker).
+       Purely a flag, never visible: the host polls #ovl3d's inline display —
+       'flex' = run finished (win/wipe), 'none' = running or on the title screen.
+       Set by showGameOver / cleared by startRun in 06-main. Keep display:none
+       here so the TITLE screen never reads as an ended run (the host would
+       close the game on the first Play tap). See docs/GAME-INTEGRATION-NOTES.md. -->
+  <div id="ovl3d" style="display:none" aria-hidden="true"></div>
+
+  <!-- Start / Game-over screens -->
+  <div id="overlay">
+    <div id="overlay-card">
+      <div id="overlay-kicker">Endless Survival</div>
+      <h1 id="overlay-title">Invasion<span>Of Zombies</span></h1>
+      <p id="overlay-sub">Steer the squad · grab the gates · outlast the horde</p>
+      <div id="overlay-stats" class="hidden"></div>
+      <button id="play-btn" class="is-loading" disabled>Loading</button>
+      <p id="overlay-hint">Drag to steer</p>
+      <!-- Shown only when embedded in the host app (html.embedded, set in 01-core): marks the
+           game as part of Zombie Bill Tracker so the player sees the tie to their camp. -->
+      <div id="integration-badge">Part of <b>Zombie Bill Tracker</b></div>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN: full-screen themed cover shown until every asset is GPU-ready. Sits above the
+       title (#overlay z20). With the SELECT interface (08-select) it doubles as the pick screen —
+       hero/squad cards on the left, the tapped model spinning on the canvas through the #pick-window
+       cutout on the right — and stays up until the player presses its PLAY. Without 08-select markup
+       support it falls back to the classic auto-fade (06-main). -->
+  <div id="loading">
+    <div id="loading-fog"></div>
+    <div id="loading-inner">
+      <div id="loading-kicker">Endless Survival</div>
+      <div id="loading-title">Invasion<span>Of Zombies</span></div>
+    </div>
+    <div id="pick" class="hidden">
+      <div id="pick-list">
+        <div class="pick-sec">Hero</div>
+        <div id="pick-heroes"></div>
+        <div class="pick-sec">Squad</div>
+        <div id="pick-squads"></div>
+      </div>
+      <div id="pick-stage">
+        <div id="pick-window">
+          <div id="pick-stage-spin" class="hidden"></div>
+          <div id="pick-stage-note" class="hidden"></div>
+        </div>
+        <div id="pick-name"></div>
+        <div id="pick-actions">
+          <button id="pick-select">SELECT</button>
+          <button id="pick-play" disabled>LOADING&hellip;</button>
+        </div>
+      </div>
+    </div>
+    <div id="loading-bottom">
+      <div id="loading-track"><div id="loading-fill"></div></div>
+      <div id="loading-meta"><span id="loading-pct">0%</span><span id="loading-tip">Boarding up the windows&hellip;</span></div>
+    </div>
+    <div id="loading-file">loading&hellip;</div>
+  </div>
+</div>
+<!-- Babylon.js engine (vendored, loaded locally so the app works offline) -->
+<script src="assets/js/vendor/babylon.js"></script>
+<script src="assets/js/vendor/babylonjs.loaders.min.js"></script>
+<!-- i18n: containers + English first; the saved language loads on demand; then the bundle -->
+<script src="assets/js/locales/_containers.js"></script>
+<script src="assets/js/locales/en.js"></script>
+<script>
+  (function () {
+    var lang = 'en';
+    try {
+      // ?lang= wins (the embedding zbilltracker passes its in-app language so the
+      // game follows it); otherwise fall back to the saved standalone preference.
+      var q = new URLSearchParams(window.location.search).get('lang');
+      if (q && /^[a-z]{2}$/.test(q)) lang = q;
+      else { var p = JSON.parse(localStorage.getItem('zombiemultiplier_profile_v1') || '{}'); if (p && typeof p.language === 'string') lang = p.language; }
+    } catch (e) {}
+    if (lang !== 'en' && /^[a-z]{2}$/.test(lang)) document.write('<script src="assets/js/locales/' + lang + '.js"><\/script>');
+  })();
+</script>
+<script>document.write('<script src="assets/js/app.min.js?v=1783840154192?t=' + Date.now() + '"><\/script>');</script>
+</body>
+</html>

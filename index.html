@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invasion Of Zombies | Multiply the Crowd, Outlast the Horde</title>
+<meta name="description" content="A chibi zombie crowd-runner. Steer a swarm of survivors down an endless city street, run the multiplier gates to grow your crowd, and outgun the horde. Free, plays in your browser, no install.">
+<meta name="theme-color" content="#0e0e10">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e0e10'/%3E%3Ccircle cx='16' cy='13' r='6' fill='%237ee787'/%3E%3Ccircle cx='13.6' cy='12' r='1.4' fill='%230e0e10'/%3E%3Ccircle cx='18.4' cy='12' r='1.4' fill='%230e0e10'/%3E%3Cpath d='M11 24h10' stroke='%237ee787' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<!-- Open Graph (add a real assets/img/og.png 1200x630 later) -->
+<meta property="og:title" content="Invasion Of Zombies">
+<meta property="og:description" content="Multiply the crowd. Outlast the horde. Free chibi zombie crowd-runner — plays in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+/* Self-hosted Outfit — shared brand font with the game (offline-ready) */
+@font-face{font-family:'Outfit';font-style:normal;font-weight:300;font-display:swap;src:url('/assets/fonts/outfit-400.woff2') format('woff2');}
+@font-face{font-family:'Outfit';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/outfit-400.woff2') format('woff2');}
+@font-face{font-family:'Outfit';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/outfit-500.woff2') format('woff2');}
+@font-face{font-family:'Outfit';font-style:normal;font-weight:600;font-display:swap;src:url('/assets/fonts/outfit-600.woff2') format('woff2');}
+@font-face{font-family:'Outfit';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/fonts/outfit-700.woff2') format('woff2');}
+
+:root{
+  --bg:#0e0e10; --bg-soft:#1a1a1d; --card:#1a1a1d;
+  --line:#2a2a2e; --line2:#3a3a40;
+  --text:#f0f0f2; --text-dim:#9a9aa0; --text-faint:#7a7a80;
+  --accent:#7ee787; --gold:#fbbf24; --blue:#5aa9ff; --red:#f87171;
+  --sans:'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --r:4px; --maxw:1120px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg); color:var(--text); font-family:var(--sans);
+  font-weight:300; font-size:15px; line-height:1.55;
+  text-transform:uppercase; letter-spacing:.02em;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+a{color:inherit; text-decoration:none;}
+img,svg{display:block;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+section{padding:clamp(64px,9vw,112px) 0;}
+h1,h2,h3{font-weight:700; letter-spacing:-.02em; line-height:1.06;}
+.eyebrow{font-size:11px; font-weight:600; letter-spacing:.16em; color:var(--text-faint);}
+.accent{color:var(--accent);}
+.tnum{font-variant-numeric:tabular-nums;}
+
+/* announcement bar */
+.announce{background:var(--bg-soft); border-bottom:1px solid var(--line); font-size:11px;
+  letter-spacing:.08em; color:var(--text-dim); text-align:center; padding:9px 16px;}
+.announce b{color:var(--text); font-weight:600;}
+
+/* nav */
+nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+.nav-in{max-width:var(--maxw); margin:0 auto; padding:0 24px; height:60px;
+  display:flex; align-items:center; justify-content:space-between;}
+.brand{font-size:15px; font-weight:700; letter-spacing:.02em;}
+.brand b{color:var(--accent); font-weight:700;}
+.nav-r{display:flex; align-items:center; gap:26px;}
+.nav-r a{font-size:12px; font-weight:500; color:var(--text-dim); transition:color .15s;}
+.nav-r a:hover{color:var(--text);}
+.nav-btn{background:var(--text); color:var(--bg)!important; padding:9px 18px;
+  border-radius:var(--r); font-weight:600; font-size:12px; transition:.15s;}
+.nav-btn:hover{opacity:.85;}
+.nav-toggle{display:none; flex-direction:column; gap:5px; background:none; border:0; cursor:pointer; padding:6px;}
+.nav-toggle span{width:22px; height:2px; background:var(--text); transition:.2s;}
+
+/* hero */
+.hero{padding:clamp(60px,9vw,120px) 0 clamp(40px,6vw,72px); text-align:center;}
+.hero .eyebrow{display:block; margin-bottom:20px;}
+.hero h1{font-size:clamp(42px,7.4vw,88px); font-weight:800; letter-spacing:-.03em; color:#cfccd0;}
+.hero h1 span{display:block; color:var(--accent);}
+.lede{max-width:620px; margin:24px auto 0; color:var(--text-dim); font-weight:300;
+  font-size:clamp(14px,1.7vw,17px); letter-spacing:.03em; line-height:1.6;}
+.cta-row{margin-top:34px; display:flex; gap:14px; justify-content:center; align-items:center; flex-wrap:wrap;}
+.btn{display:inline-flex; align-items:center; gap:9px; border-radius:var(--r);
+  font-weight:700; font-size:13px; letter-spacing:.1em; padding:15px 30px; cursor:pointer; border:0; transition:.15s;}
+.btn-primary{background:var(--text); color:var(--bg);}
+.btn-primary:hover{background:#fff;}
+.btn-ghost{background:transparent; color:var(--text-dim); border:1px solid var(--line); }
+.btn-ghost:hover{border-color:var(--line2); color:var(--text);}
+.btn svg{width:15px; height:15px;}
+.trust-strip{margin-top:30px; display:flex; gap:22px; justify-content:center; flex-wrap:wrap;
+  font-size:11px; letter-spacing:.12em; color:var(--text-faint);}
+.trust-strip span{display:inline-flex; align-items:center; gap:7px;}
+.trust-strip span::before{content:""; width:5px; height:5px; border-radius:50%; background:var(--accent);}
+
+/* stats band */
+.band{background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.stats-in{max-width:var(--maxw); margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--line);}
+.stat{background:var(--bg-soft); padding:clamp(34px,5vw,54px) 18px; text-align:center;}
+.stat .n{font-size:clamp(30px,4vw,46px); font-weight:800; letter-spacing:-.02em; line-height:1;}
+.stat .k{margin-top:10px; font-size:11px; letter-spacing:.14em; color:var(--text-dim);}
+
+/* section title */
+.sec-title{text-align:center; max-width:640px; margin:0 auto clamp(46px,7vw,70px);}
+.sec-title .eyebrow{display:block; margin-bottom:16px;}
+.sec-title h2{font-size:clamp(30px,4.4vw,52px);}
+.sec-title p{margin-top:16px; color:var(--text-dim); font-weight:300; letter-spacing:.03em; font-size:15px;}
+
+/* feature rows */
+.feature{display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,6vw,80px); align-items:center;}
+.feature + .feature{margin-top:clamp(60px,9vw,104px);}
+.feature.flip .ftext{order:2;}
+.ftext .eyebrow{display:block; margin-bottom:14px;}
+.ftext h2{font-size:clamp(26px,3.4vw,40px);}
+.ftext p{margin-top:16px; color:var(--text-dim); font-weight:300; letter-spacing:.03em; line-height:1.6;}
+.fart{aspect-ratio:5/4; border:1px solid var(--line); border-radius:8px; overflow:hidden;
+  background:radial-gradient(120% 120% at 50% 25%,#1c1c22,#101014); display:grid; place-items:center;}
+.fart svg{width:62%; height:62%;}
+
+/* benefits */
+.inset{background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.ben-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+.ben{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:24px 22px; transition:border-color .15s;}
+.ben:hover{border-color:var(--line2);}
+.ben .ic{width:40px; height:40px; border-radius:var(--r); background:rgba(255,255,255,.06);
+  border:1px solid var(--line); display:grid; place-items:center; margin-bottom:16px; color:var(--text-dim);}
+.ben .ic svg{width:20px; height:20px;}
+.ben h3{font-size:16px; font-weight:700;}
+.ben p{color:var(--text-dim); font-weight:300; font-size:13px; margin-top:8px; line-height:1.55;}
+
+/* reviews */
+.quotes{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+.quote{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:24px 22px;}
+.stars{display:flex; gap:3px; margin-bottom:14px;}
+.stars svg{width:15px; height:15px; color:var(--gold);}
+.stars svg.e{color:var(--line2);}
+.quote p{color:var(--text); font-weight:300; font-size:14px; line-height:1.6; letter-spacing:.02em;}
+.who{margin-top:18px; display:flex; align-items:center; gap:11px;}
+.av{width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:12px; font-weight:600; color:#0e0e10;}
+.who .nm{font-size:12px; font-weight:500; color:var(--text-dim);}
+.rev-note{margin-top:22px; text-align:center; font-size:11px; letter-spacing:.1em; color:var(--text-faint);}
+
+/* download cta */
+.dl{text-align:center;}
+.dl .eyebrow{display:block; margin-bottom:16px;}
+.dl h2{font-size:clamp(32px,5vw,58px); font-weight:800; letter-spacing:-.03em;}
+.dl p{margin-top:16px; color:var(--text-dim); font-weight:300; letter-spacing:.03em;}
+.dl .cta-row{margin-top:30px;}
+.dl-note{margin-top:22px; font-size:11px; letter-spacing:.12em; color:var(--text-faint);}
+
+/* footer */
+footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
+.foot-grid{display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:32px;}
+.foot-brand .brand{font-size:16px; display:inline-block; margin-bottom:12px;}
+.foot-brand p{color:var(--text-dim); font-weight:300; font-size:13px; max-width:260px; line-height:1.6;}
+.foot-col h4{font-size:11px; letter-spacing:.14em; color:var(--text-faint); margin-bottom:14px;}
+.foot-col a{display:block; font-size:13px; color:var(--text-dim); margin-bottom:10px; transition:color .15s;}
+.foot-col a:hover{color:var(--text);}
+.legal{margin-top:clamp(40px,6vw,60px); padding-top:26px; border-top:1px solid var(--line);
+  font-size:11px; letter-spacing:.06em; color:var(--text-faint); line-height:1.7;}
+
+/* reveal */
+.reveal{opacity:0; transform:translateY(20px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);}
+.reveal.in{opacity:1; transform:none;}
+
+@media (max-width:860px){
+  .nav-toggle{display:flex;}
+  .nav-r{position:absolute; top:60px; left:0; right:0; flex-direction:column; align-items:flex-start; gap:0;
+    background:var(--bg); border-bottom:1px solid var(--line); padding:8px 24px 16px; display:none;}
+  .nav-r.open{display:flex;}
+  .nav-r a{padding:12px 0; width:100%; font-size:14px;}
+  .nav-r .nav-btn{margin-top:8px;}
+  .stats-in{grid-template-columns:repeat(2,1fr);}
+  .feature{grid-template-columns:1fr;} .feature.flip .ftext{order:0;}
+  .fart{order:-1;}
+  .ben-grid{grid-template-columns:repeat(2,1fr);}
+  .quotes{grid-template-columns:1fr;}
+  .foot-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:520px){
+  .ben-grid,.foot-grid{grid-template-columns:1fr;}
+  .trust-strip{gap:14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="announce">Now playable in your browser — <b>free</b>, no install, no account.</div>
+
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="#top">ZOMBIE<b> &#10005;</b></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-r" id="navR">
+      <a href="#features">Features</a>
+      <a href="#how">How it plays</a>
+      <a href="#reviews">Reviews</a>
+      <a class="nav-btn" href="/demo.html" target="_blank" rel="noopener">Play the demo</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow reveal in">Chibi zombie crowd-runner</span>
+    <h1 class="reveal in">Multiply the crowd.<span>Outlast the horde.</span></h1>
+    <p class="lede reveal in">Steer a swarm of survivors down an endless, fog-drenched city street. Run the multiplier gates to grow your crowd, auto-blast the horde, and swerve the wrecks. One finger. No account. Just survive.</p>
+    <div class="cta-row reveal in">
+      <a class="btn btn-primary" href="/demo.html" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Play the demo</a>
+      <a class="btn btn-ghost" href="/download.html">Get the app</a>
+    </div>
+    <div class="trust-strip reveal in"><span>Plays in browser</span><span>Fully offline</span><span>Free</span></div>
+  </div>
+</header>
+
+<!-- STATS -->
+<div class="band">
+  <div class="stats-in">
+    <div class="stat reveal"><div class="n tnum">50</div><div class="k">Max squad</div></div>
+    <div class="stat reveal"><div class="n tnum">4</div><div class="k">Weapon tiers</div></div>
+    <div class="stat reveal"><div class="n">&#8734;</div><div class="k">Endless run</div></div>
+    <div class="stat reveal"><div class="n">$0</div><div class="k">Free to play</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-title reveal">
+      <span class="eyebrow">What's inside</span>
+      <h2>A crowd-runner with teeth.</h2>
+      <p>Dead-simple to pick up, one-more-run to put down. Every street is a fresh gauntlet of gates, hordes, and wrecks.</p>
+    </div>
+
+    <div class="feature reveal">
+      <div class="ftext">
+        <span class="eyebrow">Multiplier gates</span>
+        <h2>Grow your crowd on the run.</h2>
+        <p>Split-second choices at every gate &mdash; &times;2, +12, or a risky &minus;5. Pick the right lane and a lone leader becomes a marching army. Pick wrong and you're one bad step from wiped.</p>
+      </div>
+      <div class="fart">
+        <svg viewBox="0 0 200 160" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="24" y="30" width="70" height="100" rx="6" stroke="var(--line2)"/><text x="59" y="90" fill="var(--accent)" stroke="none" font-family="Outfit" font-weight="800" font-size="30" text-anchor="middle">&times;2</text>
+          <rect x="106" y="30" width="70" height="100" rx="6" stroke="var(--line2)"/><text x="141" y="90" fill="var(--gold)" stroke="none" font-family="Outfit" font-weight="800" font-size="26" text-anchor="middle">+12</text>
+          <circle cx="70" cy="146" r="6" fill="var(--accent)" stroke="none"/><circle cx="90" cy="146" r="6" fill="var(--accent)" stroke="none"/><circle cx="110" cy="146" r="6" fill="var(--accent)" stroke="none"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="feature flip reveal">
+      <div class="ftext">
+        <span class="eyebrow">The horde</span>
+        <h2>Outgun the dead.</h2>
+        <p>Your whole squad auto-fires. Climb from pistol to SMG, shotgun, and minigun, and turn a tide of walkers, runners, and hulking brutes into confetti &mdash; while the wrecks pile up around you.</p>
+      </div>
+      <div class="fart">
+        <svg viewBox="0 0 200 160" fill="none" stroke="var(--red)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="100" cy="80" r="42" stroke="var(--line2)"/><circle cx="100" cy="80" r="15"/>
+          <path d="M100 20v18M100 122v18M40 80h18M142 80h18"/>
+          <circle cx="100" cy="80" r="4" fill="var(--red)" stroke="none"/>
+          <path d="M150 40l14-14M50 40 36 26" stroke="var(--gold)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="feature reveal">
+      <div class="ftext">
+        <span class="eyebrow">One-finger control</span>
+        <h2>Just drag to steer.</h2>
+        <p>Slide left and right to weave your swarm through gates and around parked wrecks. No buttons, no clutter &mdash; the whole run is in your thumb. Easy to start, endless to master.</p>
+      </div>
+      <div class="fart">
+        <svg viewBox="0 0 200 160" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M40 120C70 60 130 60 160 120" stroke="var(--line2)" stroke-dasharray="6 8"/>
+          <circle cx="40" cy="120" r="8" fill="var(--blue)" stroke="none" opacity=".5"/>
+          <circle cx="160" cy="120" r="10" fill="var(--blue)" stroke="none"/>
+          <path d="M120 96l40 24-16 6-4 16z" fill="var(--blue)" stroke="none"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="feature flip reveal">
+      <div class="ftext">
+        <span class="eyebrow">The city</span>
+        <h2>A hand-painted chibi world.</h2>
+        <p>Fog-drenched avenues, glowing storefronts, curb-parked wrecks, and flickering street lamps &mdash; a gloomy little world rendered as one smooth 3D scene that scrolls on forever.</p>
+      </div>
+      <div class="fart">
+        <svg viewBox="0 0 200 160" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="26" y="40" width="42" height="96" rx="3" stroke="var(--line2)"/><rect x="78" y="24" width="44" height="112" rx="3" stroke="var(--line2)"/><rect x="132" y="52" width="42" height="84" rx="3" stroke="var(--line2)"/>
+          <path d="M36 58h6M52 58h6M36 78h6M52 78h6M90 44h6M106 44h6M90 66h6M106 66h6M142 70h6M158 70h6" stroke="var(--gold)"/>
+          <rect x="120" y="112" width="34" height="18" rx="4" fill="var(--accent)" stroke="none"/><circle cx="128" cy="132" r="4"/><circle cx="146" cy="132" r="4"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="inset" id="how">
+  <div class="wrap">
+    <div class="sec-title reveal">
+      <span class="eyebrow">Why you'll keep running</span>
+      <h2>Built to just work &mdash; and just play.</h2>
+    </div>
+    <div class="ben-grid">
+      <div class="ben reveal"><div class="ic" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 8-8 8 8 0 0 1 8 8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 14.5V21"/></svg></div><h3>Plays in your browser</h3><p>No download, no store, no wait. Open the page and you're running from a lone survivor within seconds.</p></div>
+      <div class="ben reveal"><div class="ic" style="color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 3 12a9 9 0 0 1 18 0l-2 .5"/><path d="M8 20h8M12 12v8"/></svg></div><h3>Fully offline</h3><p>Once it loads, it keeps running with no connection. Every asset is bundled &mdash; nothing phones home.</p></div>
+      <div class="ben reveal"><div class="ic" style="color:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a2 2 0 0 1 0 4H9.5"/></svg></div><h3>Free to play</h3><p>The whole game, no paywall, no ads mid-run. Just a swarm, a horde, and an endless street.</p></div>
+      <div class="ben reveal"><div class="ic" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></div><h3>One-finger controls</h3><p>Drag to steer, that's it. Approachable on the first run, deep enough for the hundredth.</p></div>
+      <div class="ben reveal"><div class="ic" style="color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><h3>No account</h3><p>No sign-up, no email, no profile. Nothing between you and the next run.</p></div>
+      <div class="ben reveal"><div class="ic" style="color:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/></svg></div><h3>Chibi art, gloomy mood</h3><p>Cute proportions, moody fog, painted facades and wrecked cars &mdash; a little world with a lot of atmosphere.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="wrap">
+    <div class="sec-title reveal">
+      <span class="eyebrow">Word on the street</span>
+      <h2>What players are saying.</h2>
+    </div>
+    <div class="quotes">
+      <div class="quote reveal"><div class="stars" data-stars></div><p>"Went in for one run, looked up an hour later. The gate math gets you &mdash; you always think you can grab the &times;3."</p><div class="who"><span class="av" data-name="Maya R"></span><span class="nm">Placeholder review</span></div></div>
+      <div class="quote reveal"><div class="stars" data-stars></div><p>"Perfect waiting-room game. It loads instantly and I don't have to install anything or make an account."</p><div class="who"><span class="av" data-name="Devon K"></span><span class="nm">Placeholder review</span></div></div>
+      <div class="quote reveal"><div class="stars" data-stars></div><p>"The little foggy city is weirdly cozy for a game about a zombie horde. Swerving the parked cars never gets old."</p><div class="who"><span class="av" data-name="Sofia L"></span><span class="nm">Placeholder review</span></div></div>
+    </div>
+    <p class="rev-note">Placeholder reviews &mdash; real player quotes will land here after launch.</p>
+  </div>
+</section>
+
+<!-- DOWNLOAD CTA -->
+<section class="inset dl" id="get">
+  <div class="wrap">
+    <span class="eyebrow">Play now</span>
+    <h2>Ready to run?</h2>
+    <p>Free. In your browser. No install, no account.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/demo.html" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Play the demo</a>
+    </div>
+    <div class="dl-note">Mobile app coming soon.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top">ZOMBIE<b> &#10005;</b></a>
+        <p>A chibi zombie crowd-runner. Multiply the crowd, outlast the horde, and see how far the street takes you.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Game</h4>
+        <a href="#features">Features</a>
+        <a href="#how">How it plays</a>
+        <a href="#reviews">Reviews</a>
+      </div>
+      <div class="foot-col">
+        <h4>More</h4>
+        <a href="/privacy.html">Privacy</a>
+        <a href="mailto:support@invasionofzombies.com">Support</a>
+      </div>
+      <div class="foot-col">
+        <h4>Play</h4>
+        <a href="/demo.html" target="_blank" rel="noopener">Browser demo</a>
+        <a href="/download.html">Get the app</a>
+      </div>
+    </div>
+    <div class="legal">
+      Invasion Of Zombies is a free browser game. No accounts, no tracking, no data leaves your device.
+      &copy; <span id="cpyear">2026</span> Ubersoft. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // scroll reveal
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.1, rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ if(!el.classList.contains('in')) io.observe(el); });
+
+  // hamburger
+  var t=document.getElementById('navToggle'), r=document.getElementById('navR');
+  t.addEventListener('click', function(){ r.classList.toggle('open'); });
+  r.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ r.classList.remove('open'); }); });
+  window.addEventListener('resize', function(){ if(innerWidth>860) r.classList.remove('open'); });
+
+  // copyright year
+  var y=new Date().getFullYear(); document.getElementById('cpyear').textContent = y>2026 ? '2026–'+y : '2026';
+
+  // placeholder review stars (3-5) + seeded initial-avatars
+  var PAL=['#7ee787','#5aa9ff','#fbbf24','#f87171','#c084fc','#34d399','#f472b6','#facc15'];
+  function hash(s){var h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0;}return Math.abs(h);}
+  function initials(n){return n.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();}
+  var starSVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.3 6.5 21 8 14.5 3 10l6.5-.5z"/></svg>';
+  document.querySelectorAll('[data-stars]').forEach(function(el){
+    var n=3+Math.floor(Math.random()*3), h='';
+    for(var i=0;i<5;i++) h+= (i<n ? starSVG : starSVG.replace('<svg','<svg class="e"'));
+    el.innerHTML=h;
+  });
+  document.querySelectorAll('.av[data-name]').forEach(function(el){
+    var nm=el.getAttribute('data-name'); el.textContent=initials(nm); el.style.background=PAL[hash(nm)%PAL.length];
+  });
+})();
+</script>
+  <script data-goatcounter="https://invasionofzombies.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
