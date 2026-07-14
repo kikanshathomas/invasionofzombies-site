@@ -6,7 +6,9 @@
 <title>Invasion Of Zombies | Multiply the Crowd, Outlast the Horde</title>
 <meta name="description" content="A chibi zombie crowd-runner. Steer a swarm of survivors down an endless city street, run the multiplier gates to grow your crowd, and outgun the horde. No account, fully offline — coming to mobile.">
 <meta name="theme-color" content="#0e0e10">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e0e10'/%3E%3Ccircle cx='16' cy='13' r='6' fill='%237ee787'/%3E%3Ccircle cx='13.6' cy='12' r='1.4' fill='%230e0e10'/%3E%3Ccircle cx='18.4' cy='12' r='1.4' fill='%230e0e10'/%3E%3Cpath d='M11 24h10' stroke='%237ee787' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <!-- Open Graph (add a real assets/img/og.png 1200x630 later) -->
 <meta property="og:title" content="Invasion Of Zombies">
 <meta property="og:description" content="Multiply the crowd. Outlast the horde. A chibi zombie crowd-runner — coming to mobile.">
@@ -108,9 +110,9 @@ nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
 .ftext .eyebrow{display:block; margin-bottom:14px;}
 .ftext h2{font-size:clamp(26px,3.4vw,40px);}
 .ftext p{margin-top:16px; color:var(--text-dim); font-weight:300; letter-spacing:.03em; line-height:1.6;}
-.fart{aspect-ratio:5/4; border:1px solid var(--line); border-radius:8px; overflow:hidden;
-  background:radial-gradient(120% 120% at 50% 25%,#1c1c22,#101014); display:grid; place-items:center;}
-.fart svg{width:62%; height:62%;}
+.fart{max-width:320px; margin:0 auto; border:1px solid var(--line2); border-radius:14px; overflow:hidden;
+  background:#101014; box-shadow:0 24px 64px rgba(0,0,0,.5);}
+.fart img{width:100%; height:auto;}
 
 /* benefits */
 .inset{background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
@@ -231,15 +233,9 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
       <div class="ftext">
         <span class="eyebrow">Multiplier gates</span>
         <h2>Grow your crowd on the run.</h2>
-        <p>Split-second choices at every gate &mdash; &times;2, +12, or a risky &minus;5. Pick the right lane and a lone leader becomes a marching army. Pick wrong and you're one bad step from wiped.</p>
+        <p>Split-second choices at every gate &mdash; &times;3 the squad, +12 recruits, or a bruising &minus;40 HP if you read it wrong. Pick the right lane and a lone leader becomes a marching army.</p>
       </div>
-      <div class="fart">
-        <svg viewBox="0 0 200 160" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="24" y="30" width="70" height="100" rx="6" stroke="var(--line2)"/><text x="59" y="90" fill="var(--accent)" stroke="none" font-family="Outfit" font-weight="800" font-size="30" text-anchor="middle">&times;2</text>
-          <rect x="106" y="30" width="70" height="100" rx="6" stroke="var(--line2)"/><text x="141" y="90" fill="var(--gold)" stroke="none" font-family="Outfit" font-weight="800" font-size="26" text-anchor="middle">+12</text>
-          <circle cx="70" cy="146" r="6" fill="var(--accent)" stroke="none"/><circle cx="90" cy="146" r="6" fill="var(--accent)" stroke="none"/><circle cx="110" cy="146" r="6" fill="var(--accent)" stroke="none"/>
-        </svg>
-      </div>
+      <div class="fart"><img src="/assets/img/shots/gates.jpg" alt="A multiplier gate across the street: ×3, +12, or −40 HP" loading="lazy" width="540" height="960"></div>
     </div>
 
     <div class="feature flip reveal">
@@ -248,14 +244,7 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
         <h2>Outgun the dead.</h2>
         <p>Your whole squad auto-fires. Climb from pistol to SMG, shotgun, and minigun, and turn a tide of walkers, runners, and hulking brutes into confetti &mdash; while the wrecks pile up around you.</p>
       </div>
-      <div class="fart">
-        <svg viewBox="0 0 200 160" fill="none" stroke="var(--red)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="100" cy="80" r="42" stroke="var(--line2)"/><circle cx="100" cy="80" r="15"/>
-          <path d="M100 20v18M100 122v18M40 80h18M142 80h18"/>
-          <circle cx="100" cy="80" r="4" fill="var(--red)" stroke="none"/>
-          <path d="M150 40l14-14M50 40 36 26" stroke="var(--gold)"/>
-        </svg>
-      </div>
+      <div class="fart"><img src="/assets/img/shots/horde.jpg" alt="A pack of chibi zombies closing in on the leader" loading="lazy" width="540" height="960"></div>
     </div>
 
     <div class="feature reveal">
@@ -264,14 +253,7 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
         <h2>Just drag to steer.</h2>
         <p>Slide left and right to weave your swarm through gates and around parked wrecks. No buttons, no clutter &mdash; the whole run is in your thumb. Easy to start, endless to master.</p>
       </div>
-      <div class="fart">
-        <svg viewBox="0 0 200 160" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M40 120C70 60 130 60 160 120" stroke="var(--line2)" stroke-dasharray="6 8"/>
-          <circle cx="40" cy="120" r="8" fill="var(--blue)" stroke="none" opacity=".5"/>
-          <circle cx="160" cy="120" r="10" fill="var(--blue)" stroke="none"/>
-          <path d="M120 96l40 24-16 6-4 16z" fill="var(--blue)" stroke="none"/>
-        </svg>
-      </div>
+      <div class="fart"><img src="/assets/img/shots/squad.jpg" alt="A 23-strong squad marching up the center line behind a wall of minigun tracers" loading="lazy" width="540" height="960"></div>
     </div>
 
     <div class="feature flip reveal">
@@ -280,13 +262,16 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
         <h2>A hand-painted chibi world.</h2>
         <p>Fog-drenched avenues, glowing storefronts, curb-parked wrecks, and flickering street lamps &mdash; a gloomy little world rendered as one smooth 3D scene that scrolls on forever.</p>
       </div>
-      <div class="fart">
-        <svg viewBox="0 0 200 160" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="26" y="40" width="42" height="96" rx="3" stroke="var(--line2)"/><rect x="78" y="24" width="44" height="112" rx="3" stroke="var(--line2)"/><rect x="132" y="52" width="42" height="84" rx="3" stroke="var(--line2)"/>
-          <path d="M36 58h6M52 58h6M36 78h6M52 78h6M90 44h6M106 44h6M90 66h6M106 66h6M142 70h6M158 70h6" stroke="var(--gold)"/>
-          <rect x="120" y="112" width="34" height="18" rx="4" fill="var(--accent)" stroke="none"/><circle cx="128" cy="132" r="4"/><circle cx="146" cy="132" r="4"/>
-        </svg>
+      <div class="fart"><img src="/assets/img/shots/city.jpg" alt="Painted chibi facades and street trees lining the endless road, a SHIELD gate ahead" loading="lazy" width="540" height="864"></div>
+    </div>
+
+    <div class="feature reveal">
+      <div class="ftext">
+        <span class="eyebrow">Drizzy boost</span>
+        <h2>Tap the war machine.</h2>
+        <p>A battered van parked in the wreckage &mdash; tap it and the whole squad piles in for a few glorious seconds of twin .50 cals. Two walls of lead, exploding wrecks, and nothing ahead survives.</p>
       </div>
+      <div class="fart"><img src="/assets/img/shots/drizzy.jpg" alt="The war machine van rolling with the DRIZZY BOOST timer up, twin miniguns blazing" loading="lazy" width="540" height="960"></div>
     </div>
   </div>
 </section>
