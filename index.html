@@ -112,7 +112,7 @@ nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
 .ftext p{margin-top:16px; color:var(--text-dim); font-weight:300; letter-spacing:.03em; line-height:1.6;}
 .fart{max-width:320px; margin:0 auto; border:1px solid var(--line2); border-radius:14px; overflow:hidden;
   background:#101014; box-shadow:0 24px 64px rgba(0,0,0,.5);}
-.fart img{width:100%; height:auto;}
+.fart img{width:100%; aspect-ratio:540/926; object-fit:cover; object-position:center; display:block;}
 
 /* benefits */
 .inset{background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
@@ -159,6 +159,8 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
 /* reveal */
 .reveal{opacity:0; transform:translateY(20px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);}
 .reveal.in{opacity:1; transform:none;}
+.feature.reveal:nth-of-type(even){transition-delay:.06s}
+@media(prefers-reduced-motion:reduce){.reveal{transition:none; transform:none; opacity:1}}
 
 @media (max-width:860px){
   .nav-toggle{display:flex;}
@@ -191,7 +193,6 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
     <div class="nav-r" id="navR">
       <a href="#features">Features</a>
       <a href="#how">How it plays</a>
-      <a href="#reviews">Reviews</a>
       <a class="nav-btn" href="/download.html">Get the game</a>
     </div>
   </div>
@@ -262,7 +263,7 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
         <h2>A hand-painted chibi world.</h2>
         <p>Fog-drenched avenues, glowing storefronts, curb-parked wrecks, and flickering street lamps &mdash; a gloomy little world rendered as one smooth 3D scene that scrolls on forever.</p>
       </div>
-      <div class="fart"><img src="/assets/img/shots/city.jpg" alt="Painted chibi facades and street trees lining the endless road, a SHIELD gate ahead" loading="lazy" width="540" height="834"></div>
+      <div class="fart"><img src="/assets/img/shots/city.jpg" alt="Painted chibi facades and street trees lining the endless road, a SHIELD gate ahead" loading="lazy" width="540" height="926"></div>
     </div>
 
     <div class="feature reveal">
@@ -294,21 +295,6 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
   </div>
 </section>
 
-<!-- REVIEWS -->
-<section id="reviews">
-  <div class="wrap">
-    <div class="sec-title reveal">
-      <span class="eyebrow">Word on the street</span>
-      <h2>What players are saying.</h2>
-    </div>
-    <div class="quotes">
-      <div class="quote reveal"><div class="stars" data-stars></div><p>"Went in for one run, looked up an hour later. The gate math gets you &mdash; you always think you can grab the &times;3."</p><div class="who"><span class="av" data-name="Maya R"></span><span class="nm">Placeholder review</span></div></div>
-      <div class="quote reveal"><div class="stars" data-stars></div><p>"Perfect waiting-room game. It loads instantly and I don't have to install anything or make an account."</p><div class="who"><span class="av" data-name="Devon K"></span><span class="nm">Placeholder review</span></div></div>
-      <div class="quote reveal"><div class="stars" data-stars></div><p>"The little foggy city is weirdly cozy for a game about a zombie horde. Swerving the parked cars never gets old."</p><div class="who"><span class="av" data-name="Sofia L"></span><span class="nm">Placeholder review</span></div></div>
-    </div>
-    <p class="rev-note">Placeholder reviews &mdash; real player quotes will land here after launch.</p>
-  </div>
-</section>
 
 <!-- DOWNLOAD CTA -->
 <section class="inset dl" id="get">
@@ -334,7 +320,6 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
         <h4>Game</h4>
         <a href="#features">Features</a>
         <a href="#how">How it plays</a>
-        <a href="#reviews">Reviews</a>
       </div>
       <div class="foot-col">
         <h4>More</h4>
