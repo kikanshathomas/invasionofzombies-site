@@ -133,7 +133,9 @@ nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
 @media (prefers-reduced-motion:no-preference){.lightbox img{animation:lbpop .2s ease}}
 @keyframes lbpop{from{transform:scale(.97); opacity:0} to{transform:scale(1); opacity:1}}
 
-.fart img{width:100%; aspect-ratio:460/818; object-fit:cover; object-position:center; display:block;}
+/* height:auto is load-bearing: CSS width kills the width="" attribute but the height=""
+   attribute otherwise survives as a FIXED 818px height — cover then crops to a center strip */
+.fart img{width:100%; height:auto; display:block;}
 
 /* benefits */
 .inset{background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
