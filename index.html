@@ -145,6 +145,18 @@ nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
 .dl .cta-row{margin-top:30px;}
 .dl-note{margin-top:22px; font-size:11px; letter-spacing:.12em; color:var(--text-faint);}
 
+/* faq (ZBT house pattern) */
+.faq-list{max-width:760px; margin:0 auto; display:flex; flex-direction:column; gap:10px}
+.faq{background:var(--card); border:1px solid var(--line); border-radius:var(--r); transition:border-color .15s}
+.faq:hover{border-color:var(--line2)}
+.faq summary{list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 20px; font-size:14px; font-weight:600; color:var(--text); -webkit-tap-highlight-color:transparent}
+.faq summary::-webkit-details-marker{display:none}
+.faq .fx{flex:0 0 auto; width:18px; height:18px; position:relative}
+.faq .fx::before,.faq .fx::after{content:""; position:absolute; left:2px; right:2px; top:8px; height:2px; background:var(--text-dim); border-radius:2px; transition:transform .18s ease}
+.faq .fx::after{transform:rotate(90deg)}
+.faq[open] .fx::after{transform:rotate(0)}
+.faq p{padding:0 20px 18px; font-size:13.5px; font-weight:300; color:var(--text-dim); line-height:1.7; letter-spacing:.02em}
+
 /* footer */
 footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
 .foot-grid{display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:32px;}
@@ -296,6 +308,23 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
 </section>
 
 
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-title reveal">
+      <span class="eyebrow">FAQ</span>
+      <h2>Questions, answered.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq"><summary>What kind of game is it?<span class="fx" aria-hidden="true"></span></summary><p>An endless crowd-runner. Steer a squad of survivors down a zombie-filled street, multiply the crowd through the gates, climb the weapon ladder, and outlast the horde.</p></details>
+      <details class="faq"><summary>Does it work offline?<span class="fx" aria-hidden="true"></span></summary><p>100%. There's no account, no server, and no tracking — the whole city lives on your phone.</p></details>
+      <details class="faq"><summary>Is it really pay-once?<span class="fx" aria-hidden="true"></span></summary><p>Yes — $1.99 one time on Google Play. No subscription, no in-app purchases, no ads.</p></details>
+      <details class="faq"><summary>Why is the download big?<span class="fx" aria-hidden="true"></span></summary><p>Every 3D survivor, zombie, street, and weapon ships inside the download (~160MB), so nothing streams from a server and nothing needs a connection.</p></details>
+      <details class="faq"><summary>Is it scary or gory?<span class="fx" aria-hidden="true"></span></summary><p>More Halloween than horror. The zombies are chibi cartoons, hits are cartoon hits, and there's no blood or gore.</p></details>
+    </div>
+  </div>
+</section>
+
 <!-- DOWNLOAD CTA -->
 <section class="inset dl" id="get">
   <div class="wrap">
@@ -319,7 +348,8 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
       <div class="foot-col">
         <h4>Product</h4>
         <a href="#features">Features</a>
-        <a href="#how">How it plays</a>
+        <a href="#how">Why it's different</a>
+        <a href="#faq">FAQ</a>
       </div>
       <div class="foot-col">
         <h4>Company</h4>
@@ -329,7 +359,6 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
       <div class="foot-col">
         <h4>Get the app</h4>
         <a href="https://play.google.com/store/apps/details?id=com.invasionofzombies.app" target="_blank" rel="noopener">Google Play</a>
-        <a href="/download.html">Get the game</a>
       </div>
     </div>
     <div class="legal">
