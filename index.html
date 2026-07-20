@@ -70,6 +70,12 @@ nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
 .nav-toggle span{width:22px; height:2px; background:var(--text); transition:.2s;}
 
 /* hero */
+.app-icon{border-radius:22%; border:1px solid var(--line); box-shadow:0 10px 34px rgba(0,0,0,.45);}
+.hero-icon{display:block; margin:0 auto 22px; width:96px; height:96px;}
+.badges{display:flex; gap:14px; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:34px;}
+.gp-badge{display:inline-block; transition:opacity .15s;}
+.gp-badge:hover{opacity:.85;}
+.gp-badge img{height:54px; width:auto; display:block;}
 .hero{padding:clamp(60px,9vw,120px) 0 clamp(40px,6vw,72px); text-align:center;}
 .hero .eyebrow{display:block; margin-bottom:20px;}
 .hero h1{font-size:clamp(42px,7.4vw,88px); font-weight:800; letter-spacing:-.03em; color:#cfccd0;}
@@ -204,22 +210,23 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
     <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
     <div class="nav-r" id="navR">
       <a href="#features">Features</a>
-      <a href="#how">How it plays</a>
-      <a class="nav-btn" href="/download.html">Get the game</a>
+      <a href="#how">Why it's different</a>
+      <a href="#faq">FAQ</a>
+      <a class="nav-btn" href="/download.html">Get the app</a>
     </div>
   </div>
 </nav>
 
 <header class="hero" id="top">
   <div class="wrap">
-    <span class="eyebrow reveal in">Chibi zombie crowd-runner</span>
+    <img class="app-icon hero-icon reveal in" src="/assets/img/app-icon.png" alt="Invasion Of Zombies app icon" width="96" height="96">
+    <span class="eyebrow reveal in">Invasion Of Zombies</span>
     <h1 class="reveal in">Multiply the crowd.<span>Outlast the horde.</span></h1>
     <p class="lede reveal in">Steer a swarm of survivors down an endless, fog-drenched city street. Run the multiplier gates to grow your crowd, auto-blast the horde, and swerve the wrecks. One finger. No account. Just survive.</p>
-    <div class="cta-row reveal in">
-      <a class="btn btn-primary" href="/download.html"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Get the game</a>
-      <a class="btn btn-ghost" href="#features">See features</a>
+    <div class="badges reveal in">
+      <a class="gp-badge" href="https://play.google.com/store/apps/details?id=com.invasionofzombies.app" target="_blank" rel="noopener"><img src="assets/img/google-play-badge.png" alt="Get it on Google Play" height="54"></a>
     </div>
-    <div class="trust-strip reveal in"><span>$1.99 · one-time</span><span>Fully offline</span><span>No account</span></div>
+    <div class="trust-strip reveal in"><span>No account</span><span>Fully offline</span><span>Pay once</span></div>
   </div>
 </header>
 
