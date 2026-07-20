@@ -56,12 +56,12 @@ h1,h2,h3{font-weight:700; letter-spacing:-.02em; line-height:1.06;}
 /* nav */
 nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
   -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
-.nav-in{max-width:var(--maxw); margin:0 auto; padding:0 24px; height:60px;
+.nav-in{max-width:var(--maxw); margin:0 auto; padding:15px 24px;
   display:flex; align-items:center; justify-content:space-between;}
-.brand{font-size:15px; font-weight:700; letter-spacing:.02em;}
-.brand b{color:var(--accent); font-weight:700;}
+.brand{font-size:18px; font-weight:700; letter-spacing:-0.02em;}
+.brand b{color:var(--text-dim); font-weight:400;}
 .nav-r{display:flex; align-items:center; gap:26px;}
-.nav-r a{font-size:12px; font-weight:500; color:var(--text-dim); transition:color .15s;}
+.nav-r a{font-size:13px; font-weight:500; color:var(--text-dim); transition:color .15s;}
 .nav-r a:hover{color:var(--text);}
 .nav-btn{background:var(--text); color:var(--bg)!important; padding:9px 18px;
   border-radius:var(--r); font-weight:600; font-size:12px; transition:.15s;}
@@ -166,7 +166,7 @@ nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
 /* footer */
 footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
 .foot-grid{display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:32px;}
-.foot-brand .brand{font-size:16px; display:inline-block; margin-bottom:12px;}
+.foot-brand .brand{font-size:18px; display:inline-block; margin-bottom:12px;}
 .foot-brand p{color:var(--text-dim); font-weight:300; font-size:13px; max-width:260px; line-height:1.6;}
 .foot-col h4{font-size:11px; letter-spacing:.14em; color:var(--text-faint); margin-bottom:14px;}
 .foot-col a{display:block; font-size:13px; color:var(--text-dim); margin-bottom:10px; transition:color .15s;}
@@ -206,7 +206,7 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
 
 <nav>
   <div class="nav-in">
-    <a class="brand" href="#top">ZOMBIE<b> &#10005;</b></a>
+    <a class="brand" href="#top">Invasion<b> Of Zombies</b></a>
     <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
     <div class="nav-r" id="navR">
       <a href="#features">Features</a>
@@ -349,7 +349,7 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <a class="brand" href="#top">ZOMBIE<b> &#10005;</b></a>
+        <a class="brand" href="#top">Invasion<b> Of Zombies</b></a>
         <p>A chibi zombie crowd-runner. Multiply the crowd, outlast the horde, and see how far the street takes you.</p>
       </div>
       <div class="foot-col">
