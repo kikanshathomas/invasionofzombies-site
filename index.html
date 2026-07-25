@@ -9,12 +9,17 @@
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<!-- Open Graph (add a real assets/img/og.png 1200x630 later) -->
+<!-- Open Graph. og.png is 1024x500 and doubles as the Play listing's feature graphic;
+     keep the declared size in step with it, here and on download/privacy. The URL is
+     ABSOLUTE on purpose - most crawlers won't resolve a root-relative og:image. -->
 <meta property="og:title" content="Invasion Of Zombies">
 <meta property="og:description" content="Multiply the crowd. Outlast the horde. A chibi zombie crowd-runner — coming to mobile.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="/assets/img/og.png">
+<meta property="og:image" content="https://invasionofzombies.com/assets/img/og.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="500">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://invasionofzombies.com/assets/img/og.png">
 <style>
 /* Self-hosted Outfit — shared brand font with the game (offline-ready) */
 @font-face{font-family:'Outfit';font-style:normal;font-weight:300;font-display:swap;src:url('/assets/fonts/outfit-400.woff2') format('woff2');}
