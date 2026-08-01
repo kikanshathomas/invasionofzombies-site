@@ -172,6 +172,7 @@
         <h4>Company</h4>
         <a href="/privacy.html">Privacy Policy</a>
         <a href="mailto:support@ubersoft.pro">Support</a>
+        <a class="donate" href="https://ko-fi.com/ubersoft" target="_blank" rel="noopener">Support development</a>
       </div>
       <div class="foot-col">
         <h4>Get the app</h4>
@@ -185,8 +186,11 @@
   </div>
 </footer>
 
-<!-- QR generated client-side; falls back to a plain link if the library can't load -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- QR generated client-side, with a plain-text link as the fallback if the library fails
+     to load. Self-hosted rather than a CDN: hotlinking 19KB made Cloudflare a third party
+     the privacy policy had to name, so the file lives in assets/js/ and the page contacts
+     nobody but this domain. Keep it that way. -->
+<script src="/assets/js/qrcode.min.js"></script>
 <script>
   (function(){
     var url = "https://play.google.com/store/apps/details?id=com.invasionofzombies.app";
