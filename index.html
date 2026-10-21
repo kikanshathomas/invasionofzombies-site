@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invasion Of Zombies | Multiply the Crowd, Outlast the Horde</title>
+<meta name="description" content="A chibi zombie crowd-runner. Steer a swarm of survivors down an endless city street, run the multiplier gates to grow your crowd, and outgun the horde. No account, fully offline — out now on Google Play.">
+<meta name="theme-color" content="#0e0e10">
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Open Graph. og.png is 1024x500 and doubles as the Play listing's feature graphic;
+     keep the declared size in step with it, here and on download/privacy. The URL is
+     ABSOLUTE on purpose - most crawlers won't resolve a root-relative og:image. -->
+<meta property="og:title" content="Invasion Of Zombies">
+<meta property="og:description" content="Multiply the crowd. Outlast the horde. A chibi zombie crowd-runner, out now on Google Play.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://invasionofzombies.com/assets/img/og.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="500">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://invasionofzombies.com/assets/img/og.png">
+<style>
+/* Self-hosted Outfit — shared brand font with the game (offline-ready) */
+@font-face{font-family:'Outfit';font-style:normal;font-weight:300;font-display:swap;src:url('/assets/fonts/outfit-400.woff2') format('woff2');}
+@font-face{font-family:'Outfit';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/outfit-400.woff2') format('woff2');}
+@font-face{font-family:'Outfit';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/outfit-500.woff2') format('woff2');}
+@font-face{font-family:'Outfit';font-style:normal;font-weight:600;font-display:swap;src:url('/assets/fonts/outfit-600.woff2') format('woff2');}
+@font-face{font-family:'Outfit';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/fonts/outfit-700.woff2') format('woff2');}
+
+:root{
+  --bg:#0e0e10; --bg-soft:#1a1a1d; --card:#1a1a1d;
+  --line:#2a2a2e; --line2:#3a3a40;
+  --text:#f0f0f2; --text-dim:#9a9aa0; --text-faint:#7a7a80;
+  --accent:#7ee787; --gold:#fbbf24; --blue:#5aa9ff; --red:#f87171;
+  --sans:'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --r:4px; --maxw:1120px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg); color:var(--text); font-family:var(--sans);
+  font-weight:300; font-size:15px; line-height:1.55;
+  text-transform:uppercase; letter-spacing:.02em;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+a{color:inherit; text-decoration:none;}
+img,svg{display:block;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+section{padding:clamp(64px,9vw,112px) 0;}
+h1,h2,h3{font-weight:700; letter-spacing:-.02em; line-height:1.06;}
+.eyebrow{font-size:11px; font-weight:600; letter-spacing:.16em; color:var(--text-faint);}
+.accent{color:var(--accent);}
+.tnum{font-variant-numeric:tabular-nums;}
+
+/* announcement bar */
+.announce{background:var(--bg-soft); border-bottom:1px solid var(--line); font-size:11px;
+  letter-spacing:.08em; color:var(--text-dim); text-align:center; padding:9px 16px;}
+.announce b{color:var(--text); font-weight:600;}
+
+/* nav */
+nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+.nav-in{max-width:var(--maxw); margin:0 auto; padding:15px 24px;
+  display:flex; align-items:center; justify-content:space-between;}
+.brand{font-size:18px; font-weight:700; letter-spacing:-0.02em;}
+.brand b{color:var(--text-dim); font-weight:400;}
+.nav-r{display:flex; align-items:center; gap:26px;}
+.nav-r a{font-size:13px; font-weight:500; color:var(--text-dim); transition:color .15s;}
+.nav-r a:hover{color:var(--text);}
+.nav-btn{background:var(--text); color:var(--bg)!important; padding:9px 18px;
+  border-radius:var(--r); font-weight:600; font-size:12px; transition:.15s;}
+.nav-btn:hover{opacity:.85;}
+.nav-toggle{display:none; flex-direction:column; gap:5px; background:none; border:0; cursor:pointer; padding:6px;}
+.nav-toggle span{width:22px; height:2px; background:var(--text); transition:.2s;}
+
+/* hero */
+.app-icon{border-radius:22%; border:1px solid var(--line); box-shadow:0 10px 34px rgba(0,0,0,.45);}
+.hero-icon{display:block; margin:0 auto 22px; width:96px; height:96px;}
+.badges{display:flex; gap:14px; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:34px;}
+.gp-badge{display:inline-block; transition:opacity .15s;}
+.gp-badge:hover{opacity:.85;}
+.gp-badge img{height:54px; width:auto; display:block;}
+.hero{padding:clamp(60px,9vw,120px) 0 clamp(40px,6vw,72px); text-align:center;}
+.hero .eyebrow{display:block; margin-bottom:20px;}
+.hero h1{font-size:clamp(42px,7.4vw,88px); font-weight:800; letter-spacing:-.03em; color:#cfccd0;}
+.hero h1 span{display:block; color:var(--accent);}
+.lede{max-width:620px; margin:24px auto 0; color:var(--text-dim); font-weight:300;
+  font-size:clamp(14px,1.7vw,17px); letter-spacing:.03em; line-height:1.6;}
+.cta-row{margin-top:34px; display:flex; gap:14px; justify-content:center; align-items:center; flex-wrap:wrap;}
+.btn{display:inline-flex; align-items:center; gap:9px; border-radius:var(--r);
+  font-weight:700; font-size:13px; letter-spacing:.1em; padding:15px 30px; cursor:pointer; border:0; transition:.15s;}
+.btn-primary{background:var(--text); color:var(--bg);}
+.btn-primary:hover{background:#fff;}
+.btn-ghost{background:transparent; color:var(--text-dim); border:1px solid var(--line); }
+.btn-ghost:hover{border-color:var(--line2); color:var(--text);}
+.btn svg{width:15px; height:15px;}
+.trust-strip{margin-top:30px; display:flex; gap:22px; justify-content:center; flex-wrap:wrap;
+  font-size:11px; letter-spacing:.12em; color:var(--text-faint);}
+.trust-strip span{display:inline-flex; align-items:center; gap:7px;}
+.trust-strip span::before{content:""; width:5px; height:5px; border-radius:50%; background:var(--accent);}
+
+/* stats band */
+.band{background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.stats-in{max-width:var(--maxw); margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--line);}
+.stat{background:var(--bg-soft); padding:clamp(34px,5vw,54px) 18px; text-align:center;}
+.stat .n{font-size:clamp(30px,4vw,46px); font-weight:800; letter-spacing:-.02em; line-height:1;}
+.stat .k{margin-top:10px; font-size:11px; letter-spacing:.14em; color:var(--text-dim);}
+
+/* section title */
+.sec-title{text-align:center; max-width:640px; margin:0 auto clamp(46px,7vw,70px);}
+.sec-title .eyebrow{display:block; margin-bottom:16px;}
+.sec-title h2{font-size:clamp(30px,4.4vw,52px);}
+.sec-title p{margin-top:16px; color:var(--text-dim); font-weight:300; letter-spacing:.03em; font-size:15px;}
+
+/* feature rows */
+.feature{display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,6vw,80px); align-items:center;}
+.feature + .feature{margin-top:clamp(60px,9vw,104px);}
+.feature.flip .ftext{order:2;}
+.ftext .eyebrow{display:block; margin-bottom:14px;}
+.ftext h2{font-size:clamp(26px,3.4vw,40px);}
+.ftext p{margin-top:16px; color:var(--text-dim); font-weight:300; letter-spacing:.03em; line-height:1.6;}
+.fart{max-width:230px; margin:0 auto; border:1px solid var(--line2); border-radius:20px; overflow:hidden;
+  aspect-ratio:460/818; /* house standard: container holds the shot ratio (no jump while lazy imgs load) */
+  background:#101014; box-shadow:0 16px 44px -22px rgba(0,0,0,.85);}
+
+/* Clickable screenshots -> lightbox (ZBT house pattern) */
+.shot-link{display:block; padding:0; margin:0; border:0; background:none; cursor:pointer; width:100%; border-radius:0; -webkit-tap-highlight-color:transparent}
+.shot-link:focus-visible{outline:none}
+.shot-link:focus-visible img{opacity:.88}
+.shot-link img{transition:opacity .2s ease}
+.shot-link:hover img{opacity:.88}
+.lightbox{position:fixed; inset:0; z-index:200; display:none; align-items:center; justify-content:center; padding:32px; background:rgba(8,8,9,.92); backdrop-filter:blur(4px); cursor:zoom-out}
+.lightbox.open{display:flex}
+.lightbox img{max-width:min(92vw,420px); max-height:90vh; width:auto; height:auto; border-radius:14px; border:1px solid var(--line2); box-shadow:0 40px 90px -30px rgba(0,0,0,.9); cursor:default}
+.lightbox-close{position:absolute; top:18px; right:22px; width:40px; height:40px; border:0; background:none; color:var(--text-dim); font-size:30px; line-height:1; cursor:pointer; border-radius:var(--r)}
+.lightbox-close:hover{color:var(--text)}
+@media (prefers-reduced-motion:no-preference){.lightbox img{animation:lbpop .2s ease}}
+@keyframes lbpop{from{transform:scale(.97); opacity:0} to{transform:scale(1); opacity:1}}
+
+/* height:auto is load-bearing: CSS width kills the width="" attribute but the height=""
+   attribute otherwise survives as a FIXED 818px height — cover then crops to a center strip */
+.fart img{width:100%; height:auto; display:block;}
+
+/* benefits */
+.inset{background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.ben-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+.ben{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:24px 22px; transition:border-color .15s;}
+.ben:hover{border-color:var(--line2);}
+.ben .ic{width:40px; height:40px; border-radius:var(--r); background:rgba(255,255,255,.06);
+  border:1px solid var(--line); display:grid; place-items:center; margin-bottom:16px; color:var(--text-dim);}
+.ben .ic svg{width:20px; height:20px;}
+.ben h3{font-size:16px; font-weight:700;}
+.ben p{color:var(--text-dim); font-weight:300; font-size:13px; margin-top:8px; line-height:1.55;}
+
+/* reviews */
+.quotes{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+.quote{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:24px 22px;}
+.stars{display:flex; gap:3px; margin-bottom:14px;}
+.stars svg{width:15px; height:15px; color:var(--gold);}
+.stars svg.e{color:var(--line2);}
+.quote p{color:var(--text); font-weight:300; font-size:14px; line-height:1.6; letter-spacing:.02em;}
+.who{margin-top:18px; display:flex; align-items:center; gap:11px;}
+.av{width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:12px; font-weight:600; color:#0e0e10;}
+.who .nm{font-size:12px; font-weight:500; color:var(--text-dim);}
+.rev-note{margin-top:22px; text-align:center; font-size:11px; letter-spacing:.1em; color:var(--text-faint);}
+
+/* download cta */
+.dl{text-align:center;}
+.dl .eyebrow{display:block; margin-bottom:16px;}
+.dl h2{font-size:clamp(32px,5vw,58px); font-weight:800; letter-spacing:-.03em;}
+.dl p{margin-top:16px; color:var(--text-dim); font-weight:300; letter-spacing:.03em;}
+.dl .cta-row{margin-top:30px;}
+.dl-note{margin-top:22px; font-size:11px; letter-spacing:.12em; color:var(--text-faint);}
+
+/* faq (ZBT house pattern) */
+.faq-list{max-width:760px; margin:0 auto; display:flex; flex-direction:column; gap:10px}
+.faq{background:var(--card); border:1px solid var(--line); border-radius:var(--r); transition:border-color .15s}
+.faq:hover{border-color:var(--line2)}
+.faq summary{list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 20px; font-size:14px; font-weight:600; color:var(--text); -webkit-tap-highlight-color:transparent}
+.faq summary::-webkit-details-marker{display:none}
+.faq .fx{flex:0 0 auto; width:18px; height:18px; position:relative}
+.faq .fx::before,.faq .fx::after{content:""; position:absolute; left:2px; right:2px; top:8px; height:2px; background:var(--text-dim); border-radius:2px; transition:transform .18s ease}
+.faq .fx::after{transform:rotate(90deg)}
+.faq[open] .fx::after{transform:rotate(0)}
+.faq p{padding:0 20px 18px; font-size:13.5px; font-weight:300; color:var(--text-dim); line-height:1.7; letter-spacing:.02em}
+
+/* footer */
+footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
+.foot-grid{display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:32px;}
+.foot-brand .brand{font-size:18px; display:inline-block; margin-bottom:12px;}
+.foot-brand p{color:var(--text-dim); font-weight:300; font-size:13px; max-width:260px; line-height:1.6;}
+.foot-col h4{font-size:11px; letter-spacing:.14em; color:var(--text-faint); margin-bottom:14px;}
+.foot-col a{display:block; font-size:13px; color:var(--text-dim); margin-bottom:10px; transition:color .15s;}
+.foot-col a:hover{color:var(--text);}
+.legal{margin-top:clamp(40px,6vw,60px); padding-top:26px; border-top:1px solid var(--line);
+  font-size:11px; letter-spacing:.06em; color:var(--text-faint); line-height:1.7;}
+
+/* reveal */
+.reveal{opacity:0; transform:translateY(20px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);}
+.reveal.in{opacity:1; transform:none;}
+.feature.reveal:nth-of-type(even){transition-delay:.06s}
+@media(prefers-reduced-motion:reduce){.reveal{transition:none; transform:none; opacity:1}}
+
+@media (max-width:860px){
+  .nav-toggle{display:flex;}
+  .nav-r{position:absolute; top:60px; left:0; right:0; flex-direction:column; align-items:flex-start; gap:0;
+    background:var(--bg); border-bottom:1px solid var(--line); padding:8px 24px 16px; display:none;}
+  .nav-r.open{display:flex;}
+  .nav-r a{padding:12px 0; width:100%; font-size:14px;}
+  .nav-r .nav-btn{margin-top:8px;}
+  .stats-in{grid-template-columns:repeat(2,1fr);}
+  .feature{grid-template-columns:1fr;} .feature.flip .ftext{order:0;}
+  .fart{order:-1;}
+  .ben-grid{grid-template-columns:repeat(2,1fr);}
+  .quotes{grid-template-columns:1fr;}
+  .foot-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:520px){
+  .ben-grid,.foot-grid{grid-template-columns:1fr;}
+  .trust-strip{gap:14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="announce">Now outrunning the horde on Google Play · <b>no ads, no account</b> · fully offline</div>
+
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="/">Invasion<b> Of Zombies</b></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-r" id="navR">
+      <a href="#features">Features</a>
+      <a href="#how">Why it's different</a>
+      <a href="#faq">FAQ</a>
+      <a class="nav-btn" href="/download.html">Get the app</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <img class="app-icon hero-icon reveal in" src="/assets/img/app-icon.png" alt="Invasion Of Zombies app icon" width="96" height="96">
+    <span class="eyebrow reveal in">Invasion Of Zombies</span>
+    <h1 class="reveal in">Multiply the crowd.<span>Outlast the horde.</span></h1>
+    <p class="lede reveal in">Steer a swarm of survivors down an endless, fog-drenched city street. Run the multiplier gates to grow your crowd, auto-blast the horde, and swerve the wrecks. One finger. No account. Just survive.</p>
+    <div class="badges reveal in">
+      <a class="gp-badge" href="https://play.google.com/store/apps/details?id=com.invasionofzombies.app" target="_blank" rel="noopener"><img src="assets/img/google-play-badge.png" alt="Get it on Google Play" height="54"></a>
+    </div>
+    <div class="trust-strip reveal in"><span>No account</span><span>Fully offline</span><span>Free, no ads</span></div>
+  </div>
+</header>
+
+<!-- STATS -->
+<div class="band">
+  <div class="stats-in">
+    <div class="stat reveal"><div class="n tnum">50</div><div class="k">Max squad</div></div>
+    <div class="stat reveal"><div class="n tnum">4</div><div class="k">Weapon tiers</div></div>
+    <div class="stat reveal"><div class="n">&#8734;</div><div class="k">Endless run</div></div>
+    <div class="stat reveal"><div class="n tnum">0</div><div class="k">Ads</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-title reveal">
+      <span class="eyebrow">What's inside</span>
+      <h2>A crowd-runner with teeth.</h2>
+      <p>Dead-simple to pick up, one-more-run to put down. Every street is a fresh gauntlet of gates, hordes, and wrecks.</p>
+    </div>
+
+    <div class="feature reveal">
+      <div class="ftext">
+        <span class="eyebrow">Multiplier gates</span>
+        <h2>Grow your crowd on the run.</h2>
+        <p>Split-second choices at every gate &mdash; &times;3 the squad, +12 recruits, or a bruising &minus;40 HP if you read it wrong. Pick the right lane and a lone leader becomes a marching army.</p>
+      </div>
+      <div class="fart"><button class="shot-link" type="button" data-full="/assets/img/shots/gates@2x.webp" aria-label="Enlarge screenshot: A multiplier gate across the street: ×3, +12, or −40 HP"><img src="/assets/img/shots/gates.jpg" srcset="/assets/img/shots/gates.jpg 1x, /assets/img/shots/gates@2x.webp 2x" alt="A multiplier gate across the street: ×3, +12, or −40 HP" loading="lazy" width="460" height="818"></button></div>
+    </div>
+
+    <div class="feature flip reveal">
+      <div class="ftext">
+        <span class="eyebrow">The horde</span>
+        <h2>Outgun the dead.</h2>
+        <p>Your whole squad auto-fires. Climb from crossbow to SMG, shotgun, and minigun, and turn a tide of walkers, runners, and hulking brutes into confetti &mdash; while the wrecks pile up around you.</p>
+      </div>
+      <div class="fart"><button class="shot-link" type="button" data-full="/assets/img/shots/horde@2x.webp" aria-label="Enlarge screenshot: A pack of chibi zombies closing in on the leader"><img src="/assets/img/shots/horde.jpg" srcset="/assets/img/shots/horde.jpg 1x, /assets/img/shots/horde@2x.webp 2x" alt="A pack of chibi zombies closing in on the leader" loading="lazy" width="460" height="818"></button></div>
+    </div>
+
+    <div class="feature reveal">
+      <div class="ftext">
+        <span class="eyebrow">One-finger control</span>
+        <h2>Just drag to steer.</h2>
+        <p>Slide left and right to weave your swarm through gates and around parked wrecks. No buttons, no clutter &mdash; the whole run is in your thumb. Easy to start, endless to master.</p>
+      </div>
+      <div class="fart"><button class="shot-link" type="button" data-full="/assets/img/shots/squad@2x.webp" aria-label="Enlarge screenshot: A 23-strong squad marching up the center line behind a wall of minigun tracers"><img src="/assets/img/shots/squad.jpg" srcset="/assets/img/shots/squad.jpg 1x, /assets/img/shots/squad@2x.webp 2x" alt="A 23-strong squad marching up the center line behind a wall of minigun tracers" loading="lazy" width="460" height="818"></button></div>
+    </div>
+
+    <div class="feature flip reveal">
+      <div class="ftext">
+        <span class="eyebrow">The city</span>
+        <h2>A hand-painted chibi world.</h2>
+        <p>Fog-drenched avenues, glowing storefronts, curb-parked wrecks, and flickering street lamps &mdash; a gloomy little world rendered as one smooth 3D scene that scrolls on forever.</p>
+      </div>
+      <div class="fart"><button class="shot-link" type="button" data-full="/assets/img/shots/city@2x.webp" aria-label="Enlarge screenshot: Painted chibi facades and street trees lining the endless road, a SHIELD gate ahead"><img src="/assets/img/shots/city.jpg" srcset="/assets/img/shots/city.jpg 1x, /assets/img/shots/city@2x.webp 2x" alt="Painted chibi facades and street trees lining the endless road, a SHIELD gate ahead" loading="lazy" width="460" height="818"></button></div>
+    </div>
+
+    <div class="feature reveal">
+      <div class="ftext">
+        <span class="eyebrow">Drizzy boost</span>
+        <h2>Tap the war machine.</h2>
+        <p>A battered van parked in the wreckage &mdash; tap it and the whole squad piles in for a few glorious seconds of twin miniguns. Two walls of lead, exploding wrecks, and nothing ahead survives.</p>
+      </div>
+      <div class="fart"><button class="shot-link" type="button" data-full="/assets/img/shots/drizzy@2x.webp" aria-label="Enlarge screenshot: The war machine van rolling with the DRIZZY BOOST timer up, twin miniguns blazing"><img src="/assets/img/shots/drizzy.jpg" srcset="/assets/img/shots/drizzy.jpg 1x, /assets/img/shots/drizzy@2x.webp 2x" alt="The war machine van rolling with the DRIZZY BOOST timer up, twin miniguns blazing" loading="lazy" width="460" height="818"></button></div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="inset" id="how">
+  <div class="wrap">
+    <div class="sec-title reveal">
+      <span class="eyebrow">Why you'll keep running</span>
+      <h2>Built to just work &mdash; and just play.</h2>
+    </div>
+    <div class="ben-grid">
+      <div class="ben reveal"><div class="ic" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 8-8 8 8 0 0 1 8 8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 14.5V21"/></svg></div><h3>Made for your phone</h3><p>Built mobile-first from the first frame &mdash; quick runs on the go, smooth on modest hardware, no menus maze.</p></div>
+      <div class="ben reveal"><div class="ic" style="color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 3 12a9 9 0 0 1 18 0l-2 .5"/><path d="M8 20h8M12 12v8"/></svg></div><h3>Fully offline</h3><p>Once it loads, it keeps running with no connection. Every asset is bundled &mdash; nothing phones home.</p></div>
+      <div class="ben reveal"><div class="ic" style="color:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a2 2 0 0 1 0 4H9.5"/></svg></div><h3>No ads. No paywall.</h3><p>The whole game, start to finish, with nothing interrupting it and nothing held back. Just a swarm, a horde, and an endless street.</p></div>
+      <div class="ben reveal"><div class="ic" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></div><h3>One-finger controls</h3><p>Drag to steer, that's it. Approachable on the first run, deep enough for the hundredth.</p></div>
+      <div class="ben reveal"><div class="ic" style="color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><h3>No account</h3><p>No sign-up, no email, no profile. Nothing between you and the next run.</p></div>
+      <div class="ben reveal"><div class="ic" style="color:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/></svg></div><h3>Chibi art, gloomy mood</h3><p>Cute proportions, moody fog, painted facades and wrecked cars &mdash; a little world with a lot of atmosphere.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-title reveal">
+      <span class="eyebrow">FAQ</span>
+      <h2>Questions, answered.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq"><summary>What kind of game is it?<span class="fx" aria-hidden="true"></span></summary><p>An endless crowd-runner. Steer a squad of survivors down a zombie-filled street, multiply the crowd through the gates, climb the weapon ladder, and outlast the horde.</p></details>
+      <details class="faq"><summary>Does it work offline?<span class="fx" aria-hidden="true"></span></summary><p>100%. There's no account, no server, and no tracking — the whole city lives on your phone.</p></details>
+      <details class="faq"><summary>Any subscriptions or ads?<span class="fx" aria-hidden="true"></span></summary><p>None. The game is free, and there's nothing to buy inside it — no subscription, no in-app purchases, no ads. Download it and that's the whole story.</p></details>
+      <details class="faq"><summary>Why is the download big?<span class="fx" aria-hidden="true"></span></summary><p>Every 3D survivor, zombie, street, and weapon ships inside the download (~160MB), so nothing streams from a server and nothing needs a connection.</p></details>
+      <details class="faq"><summary>Is it scary or gory?<span class="fx" aria-hidden="true"></span></summary><p>More Halloween than horror. The zombies are chibi cartoons, hits are cartoon hits, and there's no blood or gore.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD CTA -->
+<section class="inset dl" id="get">
+  <div class="wrap">
+    <span class="eyebrow">Download</span>
+    <h2>Ready to run?</h2>
+    <p>No ads. Fully offline. No account.</p>
+    <div class="badges">
+      <a class="gp-badge" href="https://play.google.com/store/apps/details?id=com.invasionofzombies.app" target="_blank" rel="noopener"><img src="assets/img/google-play-badge.png" alt="Get it on Google Play" height="54"></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="/">Invasion<b> Of Zombies</b></a>
+        <p>A chibi zombie crowd-runner. Multiply the crowd, outlast the horde, and see how far the street takes you.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#how">Why it's different</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a class="donate" href="https://ko-fi.com/ubersoft" target="_blank" rel="noopener">Support Development</a>
+        <a href="mailto:support@ubersoft.pro">Support</a>
+      </div>
+      <div class="foot-col">
+        <h4>Get the app</h4>
+        <a href="https://play.google.com/store/apps/details?id=com.invasionofzombies.app" target="_blank" rel="noopener">Google Play</a>
+      </div>
+    </div>
+    <div class="legal">
+      No accounts, no tracking — your data never leaves your device.<br>
+      Google Play and the Google Play logo are trademarks of Google LLC.<br>&copy; <span id="cpyear">2026</span> <a href="https://ubersoft.pro" target="_blank" rel="noopener">Ubersoft</a>. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // scroll reveal
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.1, rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ if(!el.classList.contains('in')) io.observe(el); });
+
+  // hamburger
+  var t=document.getElementById('navToggle'), r=document.getElementById('navR');
+  t.addEventListener('click', function(){ r.classList.toggle('open'); });
+  r.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ r.classList.remove('open'); }); });
+  window.addEventListener('resize', function(){ if(innerWidth>860) r.classList.remove('open'); });
+
+  // copyright year
+  var y=new Date().getFullYear(); document.getElementById('cpyear').textContent = y>2026 ? '2026–'+y : '2026';
+
+  // placeholder review stars (3-5) + seeded initial-avatars
+  var PAL=['#7ee787','#5aa9ff','#fbbf24','#f87171','#c084fc','#34d399','#f472b6','#facc15'];
+  function hash(s){var h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0;}return Math.abs(h);}
+  function initials(n){return n.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();}
+  var starSVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.3 6.5 21 8 14.5 3 10l6.5-.5z"/></svg>';
+  document.querySelectorAll('[data-stars]').forEach(function(el){
+    var n=3+Math.floor(Math.random()*3), h='';
+    for(var i=0;i<5;i++) h+= (i<n ? starSVG : starSVG.replace('<svg','<svg class="e"'));
+    el.innerHTML=h;
+  });
+  document.querySelectorAll('.av[data-name]').forEach(function(el){
+    var nm=el.getAttribute('data-name'); el.textContent=initials(nm); el.style.background=PAL[hash(nm)%PAL.length];
+  });
+})();
+</script>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview">
+    <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+    <img id="lightboxImg" src="" alt="">
+  </div>
+  <script>(function(){
+    var lb=document.getElementById('lightbox'),img=document.getElementById('lightboxImg'),last=null;
+    function open(src,alt){img.src=src;img.alt=alt||'';lb.classList.add('open');document.body.style.overflow='hidden';}
+    function close(){lb.classList.remove('open');img.src='';document.body.style.overflow='';if(last){last.focus();last=null;}}
+    document.querySelectorAll('.shot-link').forEach(function(btn){
+      btn.addEventListener('click',function(){last=btn;var i=btn.querySelector('img');open(btn.getAttribute('data-full'),i?i.getAttribute('alt'):'');});
+    });
+    lb.addEventListener('click',function(e){if(e.target===lb||e.target.classList.contains('lightbox-close'))close();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&lb.classList.contains('open'))close();});
+  })();</script>
+
+  <script data-goatcounter="https://invasionofzombies.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
