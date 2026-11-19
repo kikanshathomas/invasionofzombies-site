@@ -2,7 +2,8 @@
 
 ## What this repo is
 Static marketing site for Invasion Of Zombies at invasionofzombies.com, served by GitHub Pages.
-Sibling repo: `invasionofzombies` (Capacitor Android packaging).
+Sibling repo: `invasionofzombies` (Capacitor Android packaging). `invasionofzombies-dev` is empty.
+Human documentation: `README.md` and `docs/`. Both are excluded from the Pages build (`_config.yml`).
 
 ## Ubersoft working rules (Thomas, CEO, 2026-10-29)
 - Every task is its own small branch and its own PR. No umbrella PRs; smaller tasks over large ones.

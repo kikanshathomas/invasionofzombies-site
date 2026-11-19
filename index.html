@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!--
+  Home page for invasionofzombies.com. CSS and the small scripts are inline.
+  URLs that start with / are site-root paths, so preview through a local server
+  (see README.md), not by opening this file directly.
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -21,7 +26,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://invasionofzombies.com/assets/img/og.png">
 <style>
-/* Self-hosted Outfit — shared brand font with the game (offline-ready) */
+/* Self-hosted Outfit, same family as the game, so the page does not call a font CDN.
+   There is no 300-weight file; font-weight 300 uses outfit-400.woff2 on purpose. */
 @font-face{font-family:'Outfit';font-style:normal;font-weight:300;font-display:swap;src:url('/assets/fonts/outfit-400.woff2') format('woff2');}
 @font-face{font-family:'Outfit';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/outfit-400.woff2') format('woff2');}
 @font-face{font-family:'Outfit';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/outfit-500.woff2') format('woff2');}
@@ -50,7 +56,6 @@ img,svg{display:block;}
 section{padding:clamp(64px,9vw,112px) 0;}
 h1,h2,h3{font-weight:700; letter-spacing:-.02em; line-height:1.06;}
 .eyebrow{font-size:11px; font-weight:600; letter-spacing:.16em; color:var(--text-faint);}
-.accent{color:var(--accent);}
 .tnum{font-variant-numeric:tabular-nums;}
 
 /* announcement bar */
@@ -87,14 +92,6 @@ nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
 .hero h1 span{display:block; color:var(--accent);}
 .lede{max-width:620px; margin:24px auto 0; color:var(--text-dim); font-weight:300;
   font-size:clamp(14px,1.7vw,17px); letter-spacing:.03em; line-height:1.6;}
-.cta-row{margin-top:34px; display:flex; gap:14px; justify-content:center; align-items:center; flex-wrap:wrap;}
-.btn{display:inline-flex; align-items:center; gap:9px; border-radius:var(--r);
-  font-weight:700; font-size:13px; letter-spacing:.1em; padding:15px 30px; cursor:pointer; border:0; transition:.15s;}
-.btn-primary{background:var(--text); color:var(--bg);}
-.btn-primary:hover{background:#fff;}
-.btn-ghost{background:transparent; color:var(--text-dim); border:1px solid var(--line); }
-.btn-ghost:hover{border-color:var(--line2); color:var(--text);}
-.btn svg{width:15px; height:15px;}
 .trust-strip{margin-top:30px; display:flex; gap:22px; justify-content:center; flex-wrap:wrap;
   font-size:11px; letter-spacing:.12em; color:var(--text-faint);}
 .trust-strip span{display:inline-flex; align-items:center; gap:7px;}
@@ -154,25 +151,11 @@ nav{position:sticky; top:0; z-index:50; background:rgba(14,14,16,.82);
 .ben h3{font-size:16px; font-weight:700;}
 .ben p{color:var(--text-dim); font-weight:300; font-size:13px; margin-top:8px; line-height:1.55;}
 
-/* reviews */
-.quotes{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
-.quote{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:24px 22px;}
-.stars{display:flex; gap:3px; margin-bottom:14px;}
-.stars svg{width:15px; height:15px; color:var(--gold);}
-.stars svg.e{color:var(--line2);}
-.quote p{color:var(--text); font-weight:300; font-size:14px; line-height:1.6; letter-spacing:.02em;}
-.who{margin-top:18px; display:flex; align-items:center; gap:11px;}
-.av{width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:12px; font-weight:600; color:#0e0e10;}
-.who .nm{font-size:12px; font-weight:500; color:var(--text-dim);}
-.rev-note{margin-top:22px; text-align:center; font-size:11px; letter-spacing:.1em; color:var(--text-faint);}
-
 /* download cta */
 .dl{text-align:center;}
 .dl .eyebrow{display:block; margin-bottom:16px;}
 .dl h2{font-size:clamp(32px,5vw,58px); font-weight:800; letter-spacing:-.03em;}
 .dl p{margin-top:16px; color:var(--text-dim); font-weight:300; letter-spacing:.03em;}
-.dl .cta-row{margin-top:30px;}
-.dl-note{margin-top:22px; font-size:11px; letter-spacing:.12em; color:var(--text-faint);}
 
 /* faq (ZBT house pattern) */
 .faq-list{max-width:760px; margin:0 auto; display:flex; flex-direction:column; gap:10px}
@@ -214,7 +197,6 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
   .feature{grid-template-columns:1fr;} .feature.flip .ftext{order:0;}
   .fart{order:-1;}
   .ben-grid{grid-template-columns:repeat(2,1fr);}
-  .quotes{grid-template-columns:1fr;}
   .foot-grid{grid-template-columns:1fr 1fr;}
 }
 @media (max-width:520px){
@@ -412,22 +394,8 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
   r.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ r.classList.remove('open'); }); });
   window.addEventListener('resize', function(){ if(innerWidth>860) r.classList.remove('open'); });
 
-  // copyright year
+  // copyright year: stays "2026" until the calendar year moves on
   var y=new Date().getFullYear(); document.getElementById('cpyear').textContent = y>2026 ? '2026–'+y : '2026';
-
-  // placeholder review stars (3-5) + seeded initial-avatars
-  var PAL=['#7ee787','#5aa9ff','#fbbf24','#f87171','#c084fc','#34d399','#f472b6','#facc15'];
-  function hash(s){var h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0;}return Math.abs(h);}
-  function initials(n){return n.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();}
-  var starSVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.3 6.5 21 8 14.5 3 10l6.5-.5z"/></svg>';
-  document.querySelectorAll('[data-stars]').forEach(function(el){
-    var n=3+Math.floor(Math.random()*3), h='';
-    for(var i=0;i<5;i++) h+= (i<n ? starSVG : starSVG.replace('<svg','<svg class="e"'));
-    el.innerHTML=h;
-  });
-  document.querySelectorAll('.av[data-name]').forEach(function(el){
-    var nm=el.getAttribute('data-name'); el.textContent=initials(nm); el.style.background=PAL[hash(nm)%PAL.length];
-  });
 })();
 </script>
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview">
@@ -445,6 +413,7 @@ footer{border-top:1px solid var(--line); padding:clamp(48px,6vw,72px) 0 40px;}
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&lb.classList.contains('open'))close();});
   })();</script>
 
+  <!-- Anonymous page views only (GoatCounter). Named in privacy.html section 03. Do not add other third-party scripts. -->
   <script data-goatcounter="https://invasionofzombies.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
 </body>
